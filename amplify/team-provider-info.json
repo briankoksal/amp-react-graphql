@@ -17,6 +17,9 @@
       },
       "api": {
         "ampreactgraphql": {}
+      },
+      "storage": {
+        "imagestorage": {}
       }
     }
   }
