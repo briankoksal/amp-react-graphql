@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import "@aws-amplify/ui-react/styles.css";
-import { API, Storage } from 'aws-amplify';
+import { Amplify,API, Storage,PubSub } from 'aws-amplify';
 import {
   Button,
   Flex,
@@ -13,11 +13,20 @@ import {
   withAuthenticator,
 } from '@aws-amplify/ui-react';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col'
+import Sensors from './components/audioSensorData';
+import { AWSIoTProvider } from '@aws-amplify/pubsub';
+// import '@aws-amplify/ui/dist/style.css';
+
 import { listNotes } from "./graphql/queries";
 import {
   createNote as createNoteMutation,
   deleteNote as deleteNoteMutation,
 } from "./graphql/mutations";
+import awsconfig from './aws-exports';
 
 const App = ({ signOut }) => {
   const [notes, setNotes] = useState([]);
@@ -25,6 +34,32 @@ const App = ({ signOut }) => {
   useEffect(() => {
     fetchNotes();
   }, []);
+
+// Amplify.configure(awsconfig);
+
+Amplify.configure(awsconfig);
+
+// Apply plugin with configuration
+Amplify.addPluggable(new AWSIoTProvider({
+  aws_pubsub_region: 'us-west-2',
+  aws_pubsub_endpoint: 'wss://a1hugc4cpkja96-ats.iot.us-west-2.amazonaws.com/mqtt',
+ }));
+
+  const pub = PubSub.subscribe('myTopic').subscribe({
+    next: data => {
+      try{
+        console.log('myTopic');
+        this.setState({ sensorMsg: data.value });
+      }
+      catch (error){
+        console.log("Error, are you sending the correct data?");
+      }
+    },
+    error: error => console.error(error),
+    close: () => console.log('Done'),
+  });
+
+  
 
   async function fetchNotes() {
     const apiData = await API.graphql({ query: listNotes });
@@ -42,6 +77,7 @@ const App = ({ signOut }) => {
   }
 
   async function createNote(event) {
+    PubSub.publish('myTopic', { data: 'Hello to all subscribers!' });
     event.preventDefault();
     const form = new FormData(event.target);
     const image = form.get("image");
@@ -129,7 +165,18 @@ const App = ({ signOut }) => {
         ))}
       </View>
       <Button onClick={signOut}>Sign Out</Button>
+
+      <div className="App">
+      <Container className="p-4">
+        <Row className="p-3 justify-content-md-center">
+          <Col md="auto"> <Sensors name="Air Temp" unit="°F"/> </Col>
+          <Col md="auto"> <Sensors name="Humidity" unit="%"/> </Col>
+        </Row>
+      </Container>
+    </div>
     </View>
+
+    
   );
 };
 

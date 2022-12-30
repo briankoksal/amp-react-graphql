@@ -32,3 +32,34 @@ export const listNotes = /* GraphQL */ `
     }
   }
 `;
+export const getNoiseDevice = /* GraphQL */ `
+  query GetNoiseDevice($id: ID!) {
+    getNoiseDevice(id: $id) {
+      id
+      name
+      volume
+      enabled
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listNoiseDevices = /* GraphQL */ `
+  query ListNoiseDevices(
+    $filter: ModelNoiseDeviceFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listNoiseDevices(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        volume
+        enabled
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;

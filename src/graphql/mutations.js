@@ -46,3 +46,48 @@ export const deleteNote = /* GraphQL */ `
     }
   }
 `;
+export const createNoiseDevice = /* GraphQL */ `
+  mutation CreateNoiseDevice(
+    $input: CreateNoiseDeviceInput!
+    $condition: ModelNoiseDeviceConditionInput
+  ) {
+    createNoiseDevice(input: $input, condition: $condition) {
+      id
+      name
+      volume
+      enabled
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateNoiseDevice = /* GraphQL */ `
+  mutation UpdateNoiseDevice(
+    $input: UpdateNoiseDeviceInput!
+    $condition: ModelNoiseDeviceConditionInput
+  ) {
+    updateNoiseDevice(input: $input, condition: $condition) {
+      id
+      name
+      volume
+      enabled
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteNoiseDevice = /* GraphQL */ `
+  mutation DeleteNoiseDevice(
+    $input: DeleteNoiseDeviceInput!
+    $condition: ModelNoiseDeviceConditionInput
+  ) {
+    deleteNoiseDevice(input: $input, condition: $condition) {
+      id
+      name
+      volume
+      enabled
+      createdAt
+      updatedAt
+    }
+  }
+`;

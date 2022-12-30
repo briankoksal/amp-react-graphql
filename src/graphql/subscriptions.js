@@ -37,3 +37,45 @@ export const onDeleteNote = /* GraphQL */ `
     }
   }
 `;
+export const onCreateNoiseDevice = /* GraphQL */ `
+  subscription OnCreateNoiseDevice(
+    $filter: ModelSubscriptionNoiseDeviceFilterInput
+  ) {
+    onCreateNoiseDevice(filter: $filter) {
+      id
+      name
+      volume
+      enabled
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateNoiseDevice = /* GraphQL */ `
+  subscription OnUpdateNoiseDevice(
+    $filter: ModelSubscriptionNoiseDeviceFilterInput
+  ) {
+    onUpdateNoiseDevice(filter: $filter) {
+      id
+      name
+      volume
+      enabled
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteNoiseDevice = /* GraphQL */ `
+  subscription OnDeleteNoiseDevice(
+    $filter: ModelSubscriptionNoiseDeviceFilterInput
+  ) {
+    onDeleteNoiseDevice(filter: $filter) {
+      id
+      name
+      volume
+      enabled
+      createdAt
+      updatedAt
+    }
+  }
+`;
